@@ -13,7 +13,7 @@ export interface UserDocument extends UserInput, mongoose.Document {
   password: string;
   createdAt: Date;
   updatedAt: Date;
-  isValidPassword: (password: string) => Promise<boolean>;
+  comparePassword: (password: string) => Promise<boolean>;
 }
 
 const userSchema = new mongoose.Schema<UserDocument>({
@@ -36,7 +36,7 @@ userSchema.pre('save', async function (next) {
   return next()
 });
 
-userSchema.methods.isValidPassword = async function (password: string) {
+userSchema.methods.comparePassword = async function (password: string) {
   const _user = this as UserDocument;
   try {
     return await bcrypt.compare(password, _user.password);
@@ -45,6 +45,6 @@ userSchema.methods.isValidPassword = async function (password: string) {
   }
 }
 
-const User = mongoose.model<UserDocument>('User', userSchema);
+const UserModel = mongoose.model<UserDocument>('User', userSchema);
 
-export default User
+export default UserModel
