@@ -31,7 +31,7 @@
     "zod": "^3.22.4"
   },
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only ./src/app.ts",
+    "dev": "ts-node-dev --respawn --transpile-only ./src/index.ts",
     "build": "tsc",
     "start": "node ./build/index.js"
   }
