@@ -13,7 +13,6 @@
 
 Welcome to the **Producty!** A REST API for CRUDing on products with Authentication.
 
-
 ## Installation
 
 To install and run this application, follow these steps:
@@ -23,11 +22,13 @@ To install and run this application, follow these steps:
    git clone https://github.com/UcheSylvester/producty.git
    ```
 2. Navigate to the project directory:
+
    ```
     cd producty
    ```
 
 3. Install the necessary dependencies:
+
    ```
    yarn
    ```
@@ -36,7 +37,7 @@ To install and run this application, follow these steps:
 
 5. Generate your private and public keys. See [here](https://gist.github.com/ygotthilf/baa58da5c3dd1f69fae9)
 
-5. Run the application:
+6. Run the application:
    ```
    yarn dev
    ```

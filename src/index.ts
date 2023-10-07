@@ -5,17 +5,17 @@ import logger from "./utils/logger";
 import routes from "./routes";
 import deserializeUser from "./middleware/deserializeUser";
 
-const PORT = config.get<string>('port')
+const PORT = config.get<string>("port");
 
 const server = express();
 
-server.use(deserializeUser)
+server.use(deserializeUser);
 
-server.use(express.json())
+server.use(express.json());
 
-server.listen(PORT, async() => {
-  logger.info(`Server is running on port ${PORT}`)
-  await connect()
+server.listen(PORT, async () => {
+  logger.info(`Server is running on port ${PORT}`);
+  await connect();
 
-  routes(server)
-})
+  routes(server);
+});

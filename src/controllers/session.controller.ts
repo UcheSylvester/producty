@@ -1,6 +1,10 @@
 import { Request, Response } from "express";
 import { validatePassword } from "../services/user.service";
-import { createSession, findSessions, updateSession } from "../services/session.service";
+import {
+  createSession,
+  findSessions,
+  updateSession,
+} from "../services/session.service";
 import { jwtSign } from "../utils/jwt.utils";
 import config from "config";
 import { omit } from "lodash";
@@ -10,28 +14,35 @@ export const createSessionHandler = async (req: Request, res: Response) => {
     // validate password
     const user = await validatePassword(req.body);
 
-    if(!user) return res.status(401).send("Invalid username or password");
+    if (!user) return res.status(401).send("Invalid username or password");
 
     // create session
-    const session = await createSession({user: user._id, userAgent: req.get("user-agent") || ""});
+    const session = await createSession({
+      user: user._id,
+      userAgent: req.get("user-agent") || "",
+    });
 
     // create access token
     const accessToken = jwtSign(
-      { ...user, session: session._id, },
+      { ...user, session: session._id },
       { expiresIn: config.get<string>("accessTokenTtl") }
-    )
+    );
 
     // create refresh token
     const refreshToken = jwtSign(
       { ...user, session: session._id },
       { expiresIn: config.get<string>("refreshTokenTtl") }
-    )
+    );
 
-    return res.send({ accessToken, refreshToken, user: omit(user, "password") })
+    return res.send({
+      accessToken,
+      refreshToken,
+      user: omit(user, "password"),
+    });
   } catch (error: any) {
-    return res.status(400).send(error.message)
+    return res.status(400).send(error.message);
   }
-}
+};
 
 export const getUserSessionsHandler = async (req: Request, res: Response) => {
   try {
@@ -42,7 +53,7 @@ export const getUserSessionsHandler = async (req: Request, res: Response) => {
   } catch (error: any) {
     return res.status(400).send(error.message);
   }
-}
+};
 
 export const deleteSessionHandler = async (req: Request, res: Response) => {
   try {
@@ -50,10 +61,10 @@ export const deleteSessionHandler = async (req: Request, res: Response) => {
     const session = await updateSession({ _id: sessionId }, { valid: false });
 
     return res.send({
-      message: 'User successfully logged out',
-      session
+      message: "User successfully logged out",
+      session,
     });
   } catch (error: any) {
     return res.status(400).send(error.message);
   }
-}
+};

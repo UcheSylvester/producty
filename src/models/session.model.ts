@@ -1,8 +1,8 @@
-import mongoose from 'mongoose';
-import { UserDocument } from './user.model';
+import mongoose from "mongoose";
+import { UserDocument } from "./user.model";
 
 export interface SessionInput {
-  user: UserDocument['_id'];
+  user: UserDocument["_id"];
   userAgent: string;
 }
 
@@ -12,14 +12,17 @@ export interface SessionDocument extends SessionInput, mongoose.Document {
   updatedAt: Date;
 }
 
-const sessionSchema = new mongoose.Schema<SessionDocument>({
-  user: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
-  valid: {type: Boolean, default: true},
-  userAgent: {type: String},
-}, {
-  timestamps: true,
-});
+const sessionSchema = new mongoose.Schema<SessionDocument>(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    valid: { type: Boolean, default: true },
+    userAgent: { type: String },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const SessionModel = mongoose.model<SessionDocument>('Session', sessionSchema);
+const SessionModel = mongoose.model<SessionDocument>("Session", sessionSchema);
 
-export default SessionModel
+export default SessionModel;
