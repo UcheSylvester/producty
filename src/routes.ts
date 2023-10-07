@@ -6,7 +6,7 @@ import { createSessionHandler, deleteSessionHandler, getUserSessionsHandler } fr
 import { createSessionSchema } from "./schema/session.schema";
 import requireUser from "./middleware/requireUser";
 import { createProductSchema } from "./schema/product.schema";
-import { createProductHandler, deleteProductHandler, getProductHandler, updateProductHandler } from "./controllers/prduct.controller";
+import { createProductHandler, deleteProductHandler, getProductHandler, updateProductHandler } from "./controllers/product.controller";
 
 const routes = (server: Express) => {
   server.get('/health', (req, res) => res.sendStatus(200))
