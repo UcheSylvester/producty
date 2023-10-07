@@ -1,14 +1,14 @@
 import { Request, Response } from "express";
-import { validateUserPassword } from "../services/user.service";
-import { createSession } from "../services/session.service";
-import { signJwt } from "../utils/jwt.utils";
+import { validateUserPassword as validatePassword } from "../services/user.service";
+import { createSession, findSessions } from "../services/session.service";
+import { jwtSign } from "../utils/jwt.utils";
 import config from "config";
 import { omit } from "lodash";
 
 export const createSessionHandler = async (req: Request, res: Response) => {
   try {
     // validate password
-    const user = await validateUserPassword(req.body);
+    const user = await validatePassword(req.body);
 
     if(!user) return res.status(401).send("Invalid username or password");
 
@@ -16,13 +16,13 @@ export const createSessionHandler = async (req: Request, res: Response) => {
     const session = await createSession({user: user._id, userAgent: req.get("user-agent") || ""});
 
     // create access token
-    const accessToken = signJwt(
+    const accessToken = jwtSign(
       { ...user, session: session._id, },
       { expiresIn: config.get<string>("accessTokenTtl") }
     )
 
     // create refresh token
-    const refreshToken = signJwt(
+    const refreshToken = jwtSign(
       { ...user, session: session._id },
       { expiresIn: config.get<string>("refreshTokenTtl") }
     )
@@ -31,5 +31,16 @@ export const createSessionHandler = async (req: Request, res: Response) => {
   } catch (error: any) {
     console.log({error})
     return res.status(400).send(error.message)
+  }
+}
+
+export const getUserSessionsHandler = async (req: Request, res: Response) => {
+  try {
+    const userId = res.locals.user._id;
+    const sessions = await findSessions({ user: userId, valid: true });
+
+    return res.send(sessions);
+  } catch (error: any) {
+    return res.status(400).send(error.message);
   }
 }

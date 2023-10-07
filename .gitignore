@@ -1,3 +1,5 @@
 node_modules
 yarn-error.log
 config
+jwtRS256.key
+jwtRS256.key.pub

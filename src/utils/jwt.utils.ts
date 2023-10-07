@@ -1,29 +1,29 @@
 import jwt from 'jsonwebtoken'
-import config from 'config'
+import fs from 'fs'
 
-const PRIVATE_KEY = config.get<string>('privateKey')
-const PUBLIC_KEY = config.get<string>('publicKey')
+const PRIVATE_KEY = fs.readFileSync('./jwtRS256.key', 'utf8')
+const PUBLIC_KEY = fs.readFileSync('./jwtRS256.key.pub', 'utf8')
 
-export const signJwt = (payload: Object, options?: jwt.SignOptions) => {
+export const jwtSign = (payload: Object, options?: jwt.SignOptions) => {
+  console.log({payload, options})
   return jwt.sign(payload, PRIVATE_KEY, {
     ...options,
-    // TODO: fix issues when using the algorithm => `secretOrPrivateKey must be an asymmetric key when using RS256`
-    // algorithm: 'RS256'
+    algorithm: 'RS256'
   })
 }
 
-export const verifyJwt = (token: string) => {
+export const jwtVerify = (token: string) => {
   try {
     const decoded = jwt.verify(token, PUBLIC_KEY)
     return {
-      valid: true,
-      expired: false,
+      isValid: true,
+      isExpired: false,
       decoded
     }
   } catch (error: any) {
     return {
-      valid: false,
-      expired: error.message === 'jwt expired',
+      isValid: false,
+      isExpired: error.message === 'jwt expired',
       docoded: null
     }
   }
