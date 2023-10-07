@@ -1,4 +1,4 @@
-import { FilterQuery } from "mongoose";
+import { FilterQuery, UpdateQuery } from "mongoose";
 import SessionModel, { SessionDocument, SessionInput } from "../models/session.model";
 import { jwtSign, jwtVerify } from "../utils/jwt.utils";
 import { JwtPayload } from "jsonwebtoken";
@@ -16,7 +16,7 @@ export const findSessions = async (query: FilterQuery<SessionDocument>) => {
   return sessions;
 }
 
-export const updateSession = async(query: FilterQuery<SessionDocument>, updates: Partial<SessionDocument>) => {
+export const updateSession = async(query: FilterQuery<SessionDocument>, updates: UpdateQuery<SessionDocument>) => {
   const session = await SessionModel.updateOne(query, updates);
   return session
 }
