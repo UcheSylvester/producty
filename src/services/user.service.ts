@@ -1,5 +1,6 @@
 import { omit } from "lodash";
-import UserModel, { UserInput } from "../models/user.model";
+import UserModel, { UserDocument, UserInput } from "../models/user.model";
+import { FilterQuery } from "mongoose";
 
 export const createUser = async (input: UserInput) => {
   try {
@@ -9,7 +10,7 @@ export const createUser = async (input: UserInput) => {
   }
 }
 
-export const validateUserPassword = async ({email, password}: Omit<UserInput, 'name'>) => {
+export const validatePassword = async ({email, password}: Omit<UserInput, 'name'>) => {
   const user = await UserModel.findOne({email});
   if (!user) return false;
 
@@ -18,4 +19,8 @@ export const validateUserPassword = async ({email, password}: Omit<UserInput, 'n
 
   return omit(user.toJSON(), "password");
 
+}
+
+export const findUser = async (query: FilterQuery<UserDocument>) => {
+  return await UserModel.findOne(query).lean();
 }

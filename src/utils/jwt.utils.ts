@@ -5,7 +5,6 @@ const PRIVATE_KEY = fs.readFileSync('./jwtRS256.key', 'utf8')
 const PUBLIC_KEY = fs.readFileSync('./jwtRS256.key.pub', 'utf8')
 
 export const jwtSign = (payload: Object, options?: jwt.SignOptions) => {
-  console.log({payload, options})
   return jwt.sign(payload, PRIVATE_KEY, {
     ...options,
     algorithm: 'RS256'
