@@ -8,6 +8,7 @@ import {
 import { jwtSign } from "../utils/jwt.utils";
 import config from "config";
 import { omit } from "lodash";
+import { setCookies } from "../utils/cookies.utils";
 
 export const createSessionHandler = async (req: Request, res: Response) => {
   try {
@@ -33,6 +34,22 @@ export const createSessionHandler = async (req: Request, res: Response) => {
       { ...user, session: session._id },
       { expiresIn: config.get<string>("refreshTokenTtl") }
     );
+
+    setCookies(res, {
+      key: "accessToken",
+      value: accessToken,
+      options: {
+        maxAge: 15 * 60 * 1000, // 15 minutes
+      },
+    });
+
+    setCookies(res, {
+      key: "refreshToken",
+      value: refreshToken,
+      options: {
+        maxAge: 365 * 24 * 60 * 60 * 1000, // 1 year
+      },
+    });
 
     return res.send({
       accessToken,

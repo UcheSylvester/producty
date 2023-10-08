@@ -1,5 +1,8 @@
 import { Express } from "express";
-import { createUserHanlder } from "./controllers/user.controller";
+import {
+  createUserHanlder,
+  getCurrentUser,
+} from "./controllers/user.controller";
 import validateResource from "./middleware/validateResource";
 import { createUserSchema } from "./schema/user.schema";
 import {
@@ -25,6 +28,8 @@ const routes = (server: Express) => {
     validateResource(createUserSchema),
     createUserHanlder
   );
+
+  server.get("/api/users/me", requireUser, getCurrentUser);
 
   server.post(
     "/api/sessions",

@@ -1,4 +1,4 @@
-# Producty! 📹🔈🔥🔥
+# Producty! 🛒🔥🛍️
 
 ## Table of Contents
 

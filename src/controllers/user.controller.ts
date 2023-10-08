@@ -17,3 +17,11 @@ export const createUserHanlder = async (
     return res.status(409).send(error.message);
   }
 };
+
+export const getCurrentUser = async (req: Request, res: Response) => {
+  try {
+    return res.send({ user: res.locals.user });
+  } catch (error: any) {
+    return res.status(400).send(error.message);
+  }
+};
